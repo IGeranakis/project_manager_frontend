@@ -298,9 +298,10 @@ const pieChart = pieData();
               className="w-full md:w-72"
               filter
             />
-            <h3>Συνολικές ωρες για κάθε Project για τον Project Manager {selectedManager}</h3>
+            
             {selectedManager && selectedData.length > 0 && (
-              
+              <div>
+              <h3>Συνολικές ωρες για κάθε Project για τον Project Manager {selectedManager}</h3>
               <ApexChart
                 type="bar"
                 height={400}
@@ -321,6 +322,9 @@ const pieChart = pieData();
                   },
                   yaxis: {
                     title: { text: "Hours" },
+                    labels: {
+                          formatter: (val) => `${val.toFixed(1)}`,  // This ensures 1 decimal place
+                      },
                   },
                   dataLabels: {
                     enabled: true,
@@ -341,6 +345,7 @@ const pieChart = pieData();
                   },
                 ]}
               />
+              </div>
             )}
 
             {/* {selectedProjects.length > 0 && (
@@ -371,8 +376,10 @@ const pieChart = pieData();
               placeholder="Select Project"
               className="w-full md:w-72"
             />
-            <h3>Ποσοστό Συνολικών ωρών για το Project {selectedProject}</h3>
+            
             {chartData.series.length > 0 && (
+              <div>
+              <h3>Ποσοστό Συνολικών ωρών για το Project {selectedProject}</h3>
     <ApexChart
       options={{
         labels: chartData.labels,
@@ -395,6 +402,7 @@ const pieChart = pieData();
       width="600"
       height="400"
     />
+    </div>
   )}
 
   {/* KPI Panel */}

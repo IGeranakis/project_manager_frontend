@@ -519,7 +519,11 @@ const UsersOverview = () => {
                   userProjectData.map((d) => d.startime)
                 )}
 
+                
+
                 {monthlyChartData && (
+                  <>
+                  <h4 className="mt-4">Αναλυτικά οι συνολικές ώρες που έχει δαπανήσει ο {selectedUser} στο Project {selectedProject} για το έτος {selectedYear} </h4>
                   <Chart
                     type="line"
                     data={monthlyChartData}
@@ -538,6 +542,7 @@ const UsersOverview = () => {
                       margin: "2rem auto",
                     }}
                   />
+                  </>
                 )}
               </>
             )}

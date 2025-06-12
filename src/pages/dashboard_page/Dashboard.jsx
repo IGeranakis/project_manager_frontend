@@ -74,6 +74,7 @@ const Dashboard = () => {
   return (
     
     <div className="main-container">
+      <div className="card">
       <Dropdown
         value={rangeMode}
         options={[
@@ -216,6 +217,7 @@ const Dashboard = () => {
           />
         </>
       )}
+      </div>
 
       {/*<div className="card enhanced-card">
         <h2 className="card-title">🎯 Φιλτράρισμα Εφαρμογής</h2>
@@ -246,7 +248,9 @@ const Dashboard = () => {
       </div>
 
       <div className="chart-section">
+        <div className="card">
         <h3>📌 Project Durations</h3>
+        <h4>Συνολικές ώρες αφιερωμένες σε κάθε project ξεχωριστά ανάλογα με το φίλτρο</h4>
         <Chart
           type="bar"
           data={{
@@ -264,6 +268,8 @@ const Dashboard = () => {
             scales: { y: { beginAtZero: true } },
           }}
         />
+        </div>
+        <div className="card">
         <h3 className="mt-6">🏗️ Project Hours by User</h3>
         <Dropdown
           value={selectedProject}
@@ -275,6 +281,8 @@ const Dashboard = () => {
           className="w-full md:w-64 mb-4"
         />
         {selectedProject && (
+          <div>
+            <h4>Συνολικές ώρες για {selectedProject} για κάθε χρήστη που έχει ασχοληθεί με βάση το φίλτρο</h4>
           <Chart
             type="bar"
             data={{
@@ -301,7 +309,11 @@ const Dashboard = () => {
             }}
             style={{ maxWidth: "900px", height: "400px", margin: "0 auto" }}
           />
+          </div>
         )}
+        </div>
+
+        <div className="card">
 
         <h3 className="mt-6">👤 User Hours by Project</h3>
         <Dropdown
@@ -314,6 +326,8 @@ const Dashboard = () => {
           className="w-full md:w-64 mb-4"
         />
         {selectedUser && (
+          <div>
+            <h4>Συνολικές ώρες για κάθε project που έχει ασχοληθεί ο {selectedUser} με βάση το φίλτρο</h4>
           <Chart
             type="bar"
             data={{
@@ -340,9 +354,15 @@ const Dashboard = () => {
             }}
             style={{ maxWidth: "900px", height: "400px", margin: "0 auto" }}
           />
+          </div>
         )}
 
+        </div>
+
+        <div className="card">
+
         <h3 className="mt-6">📅 Submission Frequency</h3>
+        <h4>Μέσος όρος συμπλήρωσης kimai απο τους χρήστες με βάση το φίλτρο</h4>
         <Chart
           type="bar"
           data={{
@@ -362,6 +382,7 @@ const Dashboard = () => {
             },
           }}
         />
+        </div>
       </div>
     </div>
   );
