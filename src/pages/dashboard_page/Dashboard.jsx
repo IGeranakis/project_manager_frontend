@@ -19,6 +19,7 @@ const Dashboard = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [rangeMode, setRangeMode] = useState('range'); // default: date range
   const [visibilityFilter, setVisibilityFilter] = useState('Total');
+  const [missingHours, setMissingHours] = useState([]);
 
 
 
@@ -27,7 +28,7 @@ const Dashboard = () => {
     const end = endDate.toISOString().split("T")[0];
 
     try {
-      const [current, previous, projects, users, freq] = await Promise.all([
+      const [current, previous, projects, users, freq, missing_hours] = await Promise.all([
         axios.get(`${apiBaseUrl}/timesheets/total-logged-hours`, {
           params: { startdate: start, enddate: end, filter: visibilityFilter },
         }),
@@ -46,12 +47,16 @@ const Dashboard = () => {
             params: { startdate: start, enddate: end },
           }
         ),
+        axios.get(`${apiBaseUrl}/timesheets/user-expected-vs-submitted-hours`, {
+          params: { startdate: start, enddate: end },
+        }),
       ]);
 
       setKpis({ current: current.data.hours, previous: previous.data.hours });
       setProjectDurations(projects.data);
       setUserHours(users.data);
       setSubmissionFreq(freq.data);
+      setMissingHours(missing_hours.data);
     } catch (error) {
       console.error("Dashboard fetch error", error);
     }
@@ -383,6 +388,39 @@ const Dashboard = () => {
           }}
         />
         </div>
+
+          <div className="card">
+  <h3 className="mt-6">⏱️ Missing Hours by User</h3>
+  <h4>Ώρες που δεν έχουν καταγραφεί στο Kimai σε σχέση με τις αναμενόμενες</h4>
+  <Chart
+    type="bar"
+    data={{
+      labels: missingHours.map((u) => u.username),
+      datasets: [
+        {
+          label: "Missing Hours",
+          data: missingHours.map((u) => u.missing_hours),
+          backgroundColor: "#EF5350",
+        },
+      ],
+    }}
+    options={{
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: "Missing Hours" },
+        },
+        x: {
+          title: { display: true, text: "User" },
+        },
+      },
+    }}
+    style={{ maxWidth: "900px", margin: "0 auto" }}
+  />
+</div>
+
+
       </div>
     </div>
   );
